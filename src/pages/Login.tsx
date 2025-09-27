@@ -15,7 +15,9 @@ export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleEmailSubmit = ()=>{
+    setIsLoading(true)
     setStep("")
+    setIsLoading(false)
   }
   const handleOtpSubmit = ()=>{
     setStep("email")
