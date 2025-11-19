@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-// import { WordCloud } from '@isoterik/react-word-cloud';
-// import { animatedWordRenderer } from '@isoterik/react-word-cloud';
+import { WordCloud } from '@isoterik/react-word-cloud';
+import { animatedWordRenderer } from '@isoterik/react-word-cloud';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from '../context/AuthContext';
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
@@ -75,29 +75,28 @@ const WordCloudComponent: React.FC = () => {
         </h1>
         <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl shadow-2xl p-12 mb-10 border-4 border-purple-500">
           {cloudData.length > 0 ? (
-            // <WordCloud
-            //   words={cloudData}
-            //   width={1000}
-            //   height={300}
-            //   options={{
-            //     colors,
-            //     fontFamily: 'Impact, Arial Black, sans-serif',
-            //     fontWeight: 'bold',
-            //     fontSizeRange: [25, 130],
-            //     rotations: 0,
-            //     random: 0,
-            //     spiral: 'archimedean',
-            //     padding: 6,
-            //   }}
-            //   renderWord={animatedWordRenderer}
-            //   renderTooltip={(data) => (
-            //     <div className="bg-black text-white px-2 py-1 rounded text-sm shadow-lg">
-            //       {data.word?.text ?? 'Unknown'}: {data.word?.value ?? 0}
-            //     </div>
-            //   )}
-            //   onWordClick={(word) => console.log(`Clicked: ${word.text}`)}
-            // />
-            <></>
+            <WordCloud
+              words={cloudData}
+              width={1000}
+              height={300}
+              // options={{
+              //   colors,
+              //   fontFamily: 'Impact, Arial Black, sans-serif',
+              //   fontWeight: 'bold',
+              //   fontSizeRange: [25, 130],
+              //   rotations: 0,
+              //   random: 0,
+              //   spiral: 'archimedean',
+              //   padding: 6,
+              // }}
+              renderWord={animatedWordRenderer}
+              renderTooltip={(data) => (
+                <div className="bg-black text-white px-2 py-1 rounded text-sm shadow-lg">
+                  {data.word?.text ?? 'Unknown'}: {data.word?.value ?? 0}
+                </div>
+              )}
+              onWordClick={(word) => console.log(`Clicked: ${word.text}`)}
+            />
           ) : (
             <div className="h-96 flex items-center justify-center">
               <p className="text-6xl text-gray-600 font-bold animate-pulse">
