@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import WordCloud from 'react-d3-cloud';
+// import { WordCloud } from '@isoterik/react-word-cloud';
+// import { animatedWordRenderer } from '@isoterik/react-word-cloud';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from '../context/AuthContext';
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
@@ -15,6 +16,7 @@ const WordCloudComponent: React.FC = () => {
   const [inputWord, setInputWord] = useState('');
   const [socket, setSocket] = useState<Socket | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<'Connecting' | 'Connected' | 'Disconnected' | 'Error'>('Connecting');
+  
   const cloudData = useMemo(() => {
     if (words.length === 0) return [];
     const max = Math.max(...words.map(w => w.value), 1);
@@ -24,9 +26,8 @@ const WordCloudComponent: React.FC = () => {
       value: word.value === max ? 130 : Math.max(25, word.value * 9),
     }));
   }, [words]);
-  const fontSize = (word: { value: number }) => word.value;
+
   useEffect(() => {
-    
     if (!token) {
       setConnectionStatus('Disconnected');
       return;
@@ -41,7 +42,6 @@ const WordCloudComponent: React.FC = () => {
       setConnectionStatus('Connected');
     });
     newSocket.on('connect_error', () => setConnectionStatus('Error'));
-    // These are the ONLY times the cloud should update
     newSocket.on('initialWords', (data: WordData[]) => {
       console.log('Initial words:', data);
       setWords(data);
@@ -55,6 +55,7 @@ const WordCloudComponent: React.FC = () => {
       newSocket.disconnect();
     };
   }, [token]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const word = inputWord.trim();
@@ -63,27 +64,40 @@ const WordCloudComponent: React.FC = () => {
       setInputWord(''); // Clear input
     }
   };
+
+  // const colors = ['#8B5CF6', '#EC4899', '#3B82F6', '#F59E0B', '#10B981', '#F43F5E'];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 p-8">
       <div className="max-w-7xl mx-auto">
         <h1 className="text-7xl font-black text-center mb-8 bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 bg-clip-text text-transparent">
           LIVE WORD CLOUD
         </h1>
-        {/* STABLE WORD CLOUD — NO JUMPING */}
         <div className="bg-gradient-to-br from-gray-900 to-black rounded-3xl shadow-2xl p-12 mb-10 border-4 border-purple-500">
           {cloudData.length > 0 ? (
-            <WordCloud
-              key="stable-cloud"
-              data={cloudData}
-              fontSize={fontSize}
-              rotate={() => 0}
-              padding={6}
-              width={1000}
-              height={300}
-              font="Impact, Arial Black, sans-serif"
-              fontWeight="bold"
-              fill={(_d: any, i : any) => ['#8B5CF6', '#EC4899', '#3B82F6', '#F59E0B', '#10B981', '#F43F5E'][i % 6]}
-            />
+            // <WordCloud
+            //   words={cloudData}
+            //   width={1000}
+            //   height={300}
+            //   options={{
+            //     colors,
+            //     fontFamily: 'Impact, Arial Black, sans-serif',
+            //     fontWeight: 'bold',
+            //     fontSizeRange: [25, 130],
+            //     rotations: 0,
+            //     random: 0,
+            //     spiral: 'archimedean',
+            //     padding: 6,
+            //   }}
+            //   renderWord={animatedWordRenderer}
+            //   renderTooltip={(data) => (
+            //     <div className="bg-black text-white px-2 py-1 rounded text-sm shadow-lg">
+            //       {data.word?.text ?? 'Unknown'}: {data.word?.value ?? 0}
+            //     </div>
+            //   )}
+            //   onWordClick={(word) => console.log(`Clicked: ${word.text}`)}
+            // />
+            <></>
           ) : (
             <div className="h-96 flex items-center justify-center">
               <p className="text-6xl text-gray-600 font-bold animate-pulse">
@@ -92,7 +106,6 @@ const WordCloudComponent: React.FC = () => {
             </div>
           )}
         </div>
-        {/* Input — typing here NO LONGER moves words */}
         <form onSubmit={handleSubmit} className="flex gap-6 max-w-4xl mx-auto">
           <input
             type="text"
