@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 import Navigation from "../components/layout/Navigation";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -7,21 +9,40 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../co
 import { Label } from "@radix-ui/react-label";
 import { ArrowRight, Mail } from "lucide-react";
 import { InputOTP, InputOTPGroup, InputOTPSlot } from "../components/ui/input-otp";
+import authService from "../services/authService";
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const [step, setStep] = useState<string>("email");
   const [email, setEmail] = useState("");
-  const [otp, setOtp] = useState("000000");
-  const [isLoading, setIsLoading] = useState(false);
+  const [otp, setOtp] = useState("");
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-  const handleEmailSubmit = ()=>{
-    setIsLoading(true)
-    setStep("")
-    setIsLoading(false)
-  }
-  const handleOtpSubmit = ()=>{
-    setStep("email")
-  }
+  const emailMutation = useMutation<any, Error, string>({
+    mutationFn: authService.sendOtp,
+    onSuccess: () => {
+      setStep("otp");
+    },
+  });
+
+  const otpMutation = useMutation({
+    mutationFn: (data: { email: string; otp: string }) => authService.verifyOtp(data.email, data.otp),
+    onSuccess: (data) => {
+      login(data.data.token);
+      navigate("/dashboard");
+    },
+  });
+
+  const handleEmailSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    emailMutation.mutate(email);
+  };
+
+  const handleOtpSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    otpMutation.mutate({ email, otp });
+  };
 
   return (
     <>
@@ -63,17 +84,21 @@ export default function Login() {
                           />
                         </div>
                       </div>
+                      {emailMutation.isError && (
+                        <p className="text-red-500 text-sm">
+                          {emailMutation.error instanceof Error ? emailMutation.error.message : "An error occurred"}
+                        </p>
+                      )}
                       <motion.div
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
                         <Button
-                          type="button"
-                          className="w-full bg-blue-violet-600 hover:bg-blue-violet-700"
-                          disabled={isLoading}
-                          onClick={handleEmailSubmit}
+                          type="submit"
+                          className="w-full bg-blue-violet-600 hover:bg-blue-violet-700 text-white"
+                          disabled={emailMutation.isPending}
                         >
-                          {isLoading ? "Sending..." : "Send verification code"}
+                          {emailMutation.isPending ? "Sending..." : "Send verification code"}
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                       </motion.div>
@@ -119,6 +144,11 @@ export default function Login() {
                             </InputOTPGroup>
                           </InputOTP>
                         </div>
+                        {otpMutation.isError && (
+                          <p className="text-red-500 text-sm">
+                            {otpMutation.error instanceof Error ? otpMutation.error.message : "An error occurred"}
+                          </p>
+                        )}
                         <p className="text-sm text-gray-400 text-center">
                           For demo purposes, use:{" "}
                           <span className="text-blue-violet-400 font-mono">
@@ -133,10 +163,10 @@ export default function Login() {
                         >
                           <Button
                             type="submit"
-                            className="w-full bg-blue-violet-600 hover:bg-blue-violet-700"
-                            disabled={isLoading || otp.length !== 6}
+                            className="w-full bg-blue-violet-600 hover:bg-blue-violet-700 text-white"
+                            disabled={otpMutation.isPending || otp.length !== 6}
                           >
-                            {isLoading ? "Verifying..." : "Verify and sign in"}
+                            {otpMutation.isPending ? "Verifying..." : "Verify and sign in"}
                           </Button>
                         </motion.div>
                         <Button
