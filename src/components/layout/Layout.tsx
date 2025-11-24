@@ -1,27 +1,28 @@
 import React, { useState } from 'react';
 import Sidebar from './Sidebar';
+import Topbar from './Topbar';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(true);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const toggleSidebar = () => {
     setIsSidebarCollapsed(!isSidebarCollapsed);
   };
 
   return (
-    <div className="flex">
+    <div className="flex h-screen bg-gray-50">
       <Sidebar isCollapsed={isSidebarCollapsed} toggleSidebar={toggleSidebar} />
-      <main
-        className={`flex-1 transition-all duration-300 ${
-          isSidebarCollapsed ? 'md:ml-20' : 'md:ml-64'
-        }`}
-      >
-        {children}
-      </main>
+      
+      <div className={`flex-1 flex flex-col transition-all duration-300 ${isSidebarCollapsed ? 'md:ml-20' : 'md:ml-64'}`}>
+        <Topbar />
+        <main className="flex-1 p-6 mt-16 overflow-y-auto">
+          {children}
+        </main>
+      </div>
     </div>
   );
 };

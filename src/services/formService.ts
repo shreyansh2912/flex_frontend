@@ -1,8 +1,7 @@
 import axios from 'axios';
-const BASE_URL = import.meta.env.VITE_BASE_URL;
+const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5001';
 
 const API_URL = `${BASE_URL}/api/form`;
-const FORM_DATA_API_URL = `${BASE_URL}/api/form-data`;
 
 const createForm = async (formData: any, token: string) => {
   const config = {
@@ -34,43 +33,46 @@ const getFormById = async (id: string, token: string) => {
   return response.data;
 };
 
-const submitForm = async (id: string, formData: any, token: string) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const response = await axios.post(FORM_DATA_API_URL, { formId: id, data: formData }, config);
+// Public endpoint - no token required for fetching public form details
+const getPublicForm = async (id: string) => {
+  const response = await axios.get(`${API_URL}/${id}`);
   return response.data;
 };
 
-const getSubmissions = async (formId: string, token: string) => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  };
-  const response = await axios.get(`${FORM_DATA_API_URL}/${formId}`, config);
+// Public endpoint - no token required for submission
+const submitResponse = async (id: string, data: any) => {
+  const response = await axios.post(`${API_URL}/${id}/submit`, { data });
   return response.data;
 };
-
-const shareForm = async (formId: string, email: Array<string>, token: string)=>{
-  return `Form Shared ${formId} to ${email} with token ${token}`;
-}
-
 
 const getFormSubmissions = async (formId: string, token: string) => {
-  return `Form Submissions ${formId} with token ${token}`;
-}
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.get(`${API_URL}/${formId}/submissions`, config);
+  return response.data;
+};
+
+const deleteForm = async (id: string, token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.delete(`${API_URL}/${id}`, config);
+  return response.data;
+};
 
 const formService = {
   createForm,
   getForms,
   getFormById,
-  submitForm,
-  getSubmissions,
-  shareForm,
-  getFormSubmissions
+  getPublicForm,
+  submitResponse,
+  getFormSubmissions,
+  deleteForm
 };
 
 export default formService;
