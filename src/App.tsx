@@ -17,6 +17,7 @@ import CreateSession from "./pages/WordCloud/CreateSession";
 import AdminRoom from "./pages/WordCloud/AdminRoom";
 import ParticipantRoom from "./pages/WordCloud/ParticipantRoom";
 import SessionResults from "./pages/WordCloud/SessionResults";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -25,33 +26,38 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/form/:id" element={<PublicForm />} />
         <Route path="/word-cloud/join/:id" element={<ParticipantRoom />} />
-        <Route
-          path="/*"
-          element={
-            <Layout>
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/forms" element={<Forms />} />
-                <Route path="/create-form" element={<CreateForm />} />
-                <Route path="/form/:id" element={<ViewForm />} />
-                <Route path="/form/:id/submit" element={<SubmitForm />} />
-                <Route path="/form/:id/share" element={<ShareForm />} />
-                <Route path="/wordcloud" element={<WordCloud />} />
-                <Route path="/form/:id/submissions" element={<ViewSubmissions />} />
-                
-                {/* Word Cloud Routes */}
-                <Route path="/word-cloud" element={<WordCloudDashboard />} />
-                <Route path="/word-cloud/create" element={<CreateSession />} />
-                <Route path="/word-cloud/admin/:id" element={<AdminRoom />} />
-                <Route path="/word-cloud/results/:id" element={<SessionResults />} />
-                
-                {/* Catch-all route for 404 */}
-                <Route path="*" element={"404 Not Found"} />
-              </Routes>
-            </Layout>
-          }
-        />
+        <Route path="/word-cloud/join/:id" element={<ParticipantRoom />} />
+        
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/*"
+            element={
+              <Layout>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/forms" element={<Forms />} />
+                  <Route path="/create-form" element={<CreateForm />} />
+                  <Route path="/form/:id" element={<ViewForm />} />
+                  <Route path="/form/:id/submit" element={<SubmitForm />} />
+                  <Route path="/form/:id/share" element={<ShareForm />} />
+                  <Route path="/wordcloud" element={<WordCloud />} />
+                  <Route path="/form/:id/submissions" element={<ViewSubmissions />} />
+                  
+                  {/* Word Cloud Routes */}
+                  <Route path="/word-cloud" element={<WordCloudDashboard />} />
+                  <Route path="/word-cloud/create" element={<CreateSession />} />
+                  <Route path="/word-cloud/admin/:id" element={<AdminRoom />} />
+                  <Route path="/word-cloud/results/:id" element={<SessionResults />} />
+                  
+                  {/* Catch-all route for 404 */}
+                  <Route path="*" element={"404 Not Found"} />
+                </Routes>
+              </Layout>
+            }
+          />
+        </Route>
       </Routes>
     </Router>
   );

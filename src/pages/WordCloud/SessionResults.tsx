@@ -31,6 +31,27 @@ const SessionResults: React.FC = () => {
     return [...session.words].sort((a: any, b: any) => b.count - a.count);
   }, [session]);
 
+  const handleExport = () => {
+    if (!session?.words) return;
+
+    const headers = ['Word', 'Count', 'Last Active'];
+    const csvContent = [
+      headers.join(','),
+      ...session.words.map((w: any) => 
+        [`"${w.text}"`, w.count, `"${new Date(w.timestamp).toLocaleString()}"`].join(',')
+      )
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `wordcloud_session_${id}_export.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   if (!session) return <div className="flex justify-center items-center h-screen">Loading...</div>;
 
   return (
@@ -40,7 +61,10 @@ const SessionResults: React.FC = () => {
           <Link to="/word-cloud" className="text-gray-500 hover:text-gray-700 flex items-center">
             <ArrowLeft size={20} className="mr-1" /> Back to Dashboard
           </Link>
-          <button className="flex items-center gap-2 text-blue-600 font-medium hover:bg-blue-50 px-4 py-2 rounded-lg transition-colors">
+          <button 
+            onClick={handleExport}
+            className="flex items-center gap-2 text-blue-600 font-medium hover:bg-blue-50 px-4 py-2 rounded-lg transition-colors"
+          >
             <Download size={20} /> Export Data
           </button>
         </div>
