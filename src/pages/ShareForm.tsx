@@ -52,7 +52,7 @@ const ShareForm: React.FC = () => {
     const emailList = emails.split(',').map(email => email.trim()).filter(Boolean);
 
     try {
-      await formService.shareForm(formId, emailList, token);
+      await formService?.shareForm(formId, emailList, token);
       setShareSuccess(`Successfully shared the form with ${emailList.length} user(s).`);
       setEmails(''); // Clear input after success
     } catch (err: any) {

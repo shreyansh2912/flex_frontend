@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import formService from '../services/formService';
 import { useAuth } from '../context/AuthContext';
 import FormPreview from '../components/FormPreview';
-import { Trash2, Plus, ArrowRight, Save, Lock, Globe, Copy, ArrowUp, ArrowDown } from 'lucide-react';
+import { Trash2, Plus, ArrowRight, Save, Lock, Globe, ArrowUp, ArrowDown } from 'lucide-react';
 
 interface FormField {
   id: number;

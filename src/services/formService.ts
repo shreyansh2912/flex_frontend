@@ -65,6 +65,16 @@ const deleteForm = async (id: string, token: string) => {
   return response.data;
 };
 
+const shareForm = async (id: string, emails: string[], token: string) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const response = await axios.post(`${API_URL}/${id}/share`, { emails }, config);
+  return response.data;
+};
+
 const formService = {
   createForm,
   getForms,
@@ -72,7 +82,8 @@ const formService = {
   getPublicForm,
   submitResponse,
   getFormSubmissions,
-  deleteForm
+  deleteForm,
+  shareForm
 };
 
 export default formService;

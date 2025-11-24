@@ -39,7 +39,7 @@ const SubmitForm: React.FC = () => {
 
     if (token && id) {
       try {
-        await formService.submitForm(id, formData, token);
+        await formService.submitResponse(id, formData);
         setSuccess('Form submitted successfully!');
         setFormData({});
       } catch (err) {

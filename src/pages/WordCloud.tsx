@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from '../context/AuthContext';
 import D3WordCloud from '../components/D3WordCloud';
-import { Send, Cloud, Wifi, WifiOff } from 'lucide-react';
+import { Send, Cloud} from 'lucide-react';
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001';
 
@@ -18,15 +18,12 @@ const WordCloudPage: React.FC = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<'Connecting' | 'Connected' | 'Disconnected' | 'Error'>('Connecting');
   
-  // Transform raw counts into sizes suitable for D3
   const cloudData = useMemo(() => {
     if (words.length === 0) return [];
-    const max = Math.max(...words.map(w => w.value), 1);
     
-    // Normalize values to a reasonable font size range (e.g., 20px to 100px)
     return words.map(word => ({
       text: word.text,
-      value: word.value, // Pass raw value, D3 component handles scaling logic if needed, or pre-scale here
+      value: word.value,
     }));
   }, [words]);
 

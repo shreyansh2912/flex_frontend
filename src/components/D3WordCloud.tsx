@@ -68,7 +68,7 @@ const D3WordCloud: React.FC<D3WordCloudProps> = ({ words, width = 800, height = 
         .append('text')
         .style('font-size', (d) => `${d.size}px`)
         .style('font-family', 'Impact')
-        .style('fill', (d, i) => fill(i.toString()))
+        .style('fill', (_d : any, i) => fill(i.toString()))
         .attr('text-anchor', 'middle')
         .attr('transform', (d) => `translate(${[d.x, d.y]})rotate(${d.rotate})`)
         .text((d) => d.text)
