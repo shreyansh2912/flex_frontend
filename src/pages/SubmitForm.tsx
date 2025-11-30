@@ -57,28 +57,95 @@ const SubmitForm: React.FC = () => {
   }
 
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold mb-4">{form.title}</h1>
-      {success && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">{success}</div>}
-      <form onSubmit={handleSubmit}>
-        {form.fields.map((field: any) => (
-          <div key={field._id} className="mb-4">
-            <label className="block text-gray-700 font-bold mb-2">{field.label}</label>
-            <input
-              type={field.type}
-              name={field.name}
-              onChange={handleChange}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-        ))}
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Submit
-        </button>
-      </form>
+    <div 
+      className="min-h-screen p-4 flex justify-center"
+      style={{ backgroundColor: form.theme?.backgroundColor || '#ffffff', color: form.theme?.textColor || '#000000' }}
+    >
+      <div className="w-full max-w-2xl">
+        <h1 className="text-3xl font-bold mb-6 text-center">{form.title}</h1>
+        {success && <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">{success}</div>}
+        
+        <form onSubmit={handleSubmit} className="bg-white/50 backdrop-blur-sm p-6 rounded-lg shadow-sm" style={{ borderRadius: form.theme?.borderRadius || '4px' }}>
+          {form.fields.map((field: any) => {
+            // Logic Evaluation
+            let isVisible = true;
+            if (field.logic && field.logic.action && field.logic.when) {
+              const controllingValue = formData[field.logic.when];
+              const targetValue = field.logic.equals;
+              const match = String(controllingValue) === String(targetValue);
+              
+              if (field.logic.action === 'show') {
+                isVisible = match;
+              } else if (field.logic.action === 'hide') {
+                isVisible = !match;
+              }
+            }
+
+            if (!isVisible) return null;
+
+            return (
+              <div key={field._id} className="mb-6">
+                <label className="block font-bold mb-2" style={{ color: form.theme?.textColor || '#000000' }}>{field.label}</label>
+                {field.type === 'select' ? (
+                   <select
+                    name={field.name}
+                    onChange={handleChange}
+                    className="shadow border w-full py-2 px-3 leading-tight focus:outline-none focus:ring-2"
+                    style={{ 
+                      borderRadius: form.theme?.borderRadius || '4px',
+                      borderColor: form.theme?.primaryColor || '#3b82f6'
+                    }}
+                   >
+                     <option value="">Select an option</option>
+                     {field.options?.map((opt: string) => (
+                       <option key={opt} value={opt}>{opt}</option>
+                     ))}
+                   </select>
+                ) : field.type === 'radio' ? (
+                  <div className="flex flex-col gap-2">
+                    {field.options?.map((opt: string) => (
+                      <label key={opt} className="inline-flex items-center cursor-pointer">
+                        <input
+                          type="radio"
+                          name={field.name}
+                          value={opt}
+                          onChange={handleChange}
+                          className="form-radio h-4 w-4"
+                          style={{ color: form.theme?.primaryColor || '#3b82f6' }}
+                        />
+                        <span className="ml-2">{opt}</span>
+                      </label>
+                    ))}
+                  </div>
+                ) : (
+                  <input
+                    type={field.type}
+                    name={field.name}
+                    onChange={handleChange}
+                    className="shadow appearance-none border w-full py-2 px-3 leading-tight focus:outline-none focus:ring-2"
+                    style={{ 
+                      borderRadius: form.theme?.borderRadius || '4px',
+                      borderColor: form.theme?.primaryColor || '#3b82f6',
+                      color: '#000000' // Keep input text readable
+                    }}
+                  />
+                )}
+              </div>
+            );
+          })}
+          <button
+            type="submit"
+            className="font-bold py-3 px-6 w-full transition-colors duration-200"
+            style={{ 
+              backgroundColor: form.theme?.primaryColor || '#3b82f6', 
+              color: '#ffffff',
+              borderRadius: form.theme?.borderRadius || '4px'
+            }}
+          >
+            Submit
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

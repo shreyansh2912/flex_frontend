@@ -22,6 +22,11 @@ interface FormField {
     width: string;
   };
   page?: number;
+  logic?: {
+    action: 'show' | 'hide';
+    when: string;
+    equals: string;
+  };
 }
 
 const CreateForm: React.FC = () => {
@@ -219,7 +224,6 @@ const CreateForm: React.FC = () => {
             </div>
           )}
 
-          {/* Step 2: Fields */}
           {step === 2 && (
             <div className="space-y-4 text-black">
               <h2 className="text-xl font-semibold mb-4">Build Your Form</h2>
@@ -328,6 +332,50 @@ const CreateForm: React.FC = () => {
                          />
                        </div>
                     )}
+
+                    
+                    {/* Conditional Logic Builder */}
+                    <div className="mt-3 pt-3 border-t border-gray-200">
+                      <label className="text-xs font-bold text-gray-500 uppercase flex items-center gap-1 mb-2">
+                        Conditional Logic
+                      </label>
+                      <div className="grid grid-cols-3 gap-2">
+                        <select
+                          value={field.logic?.action || ''}
+                          onChange={(e) => updateField(field.id, { logic: { ...field.logic, action: e.target.value as any } })}
+                          className="w-full p-1 border rounded text-sm"
+                        >
+                          <option value="">No Logic</option>
+                          <option value="show">Show this field if...</option>
+                          <option value="hide">Hide this field if...</option>
+                        </select>
+                        
+                        {field.logic?.action && (
+                          <>
+                            <select
+                              value={field.logic?.when || ''}
+                              onChange={(e) => updateField(field.id, { logic: { ...field.logic, when: e.target.value } })}
+                              className="w-full p-1 border rounded text-sm"
+                            >
+                              <option value="">Select Field</option>
+                              {formConfig.fields
+                                .filter(f => f.id !== field.id && f.page === field.page) // Only allow fields on same page or previous (simplified to same page for now)
+                                .map(f => (
+                                  <option key={f.id} value={f.name}>{f.label}</option>
+                                ))
+                              }
+                            </select>
+                            <input
+                              type="text"
+                              value={field.logic?.equals || ''}
+                              onChange={(e) => updateField(field.id, { logic: { ...field.logic, equals: e.target.value } })}
+                              className="w-full p-1 border rounded text-sm"
+                              placeholder="Value equals..."
+                            />
+                          </>
+                        )}
+                      </div>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -361,6 +409,28 @@ const CreateForm: React.FC = () => {
                     <div className="flex items-center gap-2">
                       <input type="color" name="backgroundColor" value={formConfig.theme.backgroundColor} onChange={handleThemeChange} className="h-8 w-8 rounded cursor-pointer" />
                       <span className="text-xs">{formConfig.theme.backgroundColor}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500">Text Color</label>
+                    <div className="flex items-center gap-2">
+                      <input type="color" name="textColor" value={formConfig.theme.textColor} onChange={handleThemeChange} className="h-8 w-8 rounded cursor-pointer" />
+                      <span className="text-xs">{formConfig.theme.textColor}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500">Border Radius</label>
+                    <div className="flex items-center gap-2">
+                      <input 
+                        type="range" 
+                        name="borderRadius" 
+                        min="0" 
+                        max="20" 
+                        value={parseInt(formConfig.theme.borderRadius)} 
+                        onChange={(e) => handleThemeChange({ target: { name: 'borderRadius', value: `${e.target.value}px` } } as any)} 
+                        className="w-full" 
+                      />
+                      <span className="text-xs">{formConfig.theme.borderRadius}</span>
                     </div>
                   </div>
                 </div>

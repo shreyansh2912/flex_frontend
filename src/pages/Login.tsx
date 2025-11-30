@@ -46,16 +46,16 @@ export default function Login() {
 
   return (
     <>
-      <Navigation />
+      {/* <Navigation /> */}
       <div className="w-full text-center">
         <div className="flex justify-center h-screen items-center">
           <div className="w-[400px]  px-4">
             <div className="logo py-6 text-4xl">FLEX</div>
-            <p className="text-gray-400">Create beautiful forms effortlessly</p>
+            <p className="text-muted-foreground">Create beautiful forms effortlessly</p>
             <div className="py-4">
-              <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm">
+              <Card className="bg-card border-border backdrop-blur-sm shadow-lg">
                 <CardHeader>
-                  <CardTitle className="text-white">
+                  <CardTitle className="text-card-foreground">
                     {step === "email"
                       ? "Sign in to your account"
                       : "Enter verification code"}
@@ -72,14 +72,14 @@ export default function Login() {
                       <div className="space-y-2">
                         <Label htmlFor="email">Email</Label>
                         <div className="relative">
-                          <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                           <Input
                             id="email"
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             placeholder="you@example.com"
-                            className="pl-10 bg-gray-800 border-gray-600 text-white focus:border-blue-violet-500"
+                            className="pl-10 bg-background border-input text-foreground focus:border-blue-violet-500"
                             required
                           />
                         </div>
@@ -117,29 +117,29 @@ export default function Login() {
                             <InputOTPGroup>
                               <InputOTPSlot
                                 index={0}
-                                className="bg-gray-800 border-gray-600 text-white"
+                                className="bg-background border-input text-foreground"
                               />
                               <InputOTPSlot
                                 index={1}
-                                className="bg-gray-800 border-gray-600 text-white"
+                                className="bg-background border-input text-foreground"
                               />
                               <InputOTPSlot
                                 index={2}
-                                className="bg-gray-800 border-gray-600 text-white"
+                                className="bg-background border-input text-foreground"
                               />
                             </InputOTPGroup>
                             <InputOTPGroup>
                               <InputOTPSlot
                                 index={3}
-                                className="bg-gray-800 border-gray-600 text-white"
+                                className="bg-background border-input text-foreground"
                               />
                               <InputOTPSlot
                                 index={4}
-                                className="bg-gray-800 border-gray-600 text-white"
+                                className="bg-background border-input text-foreground"
                               />
                               <InputOTPSlot
                                 index={5}
-                                className="bg-gray-800 border-gray-600 text-white"
+                                className="bg-background border-input text-foreground"
                               />
                             </InputOTPGroup>
                           </InputOTP>
@@ -149,7 +149,7 @@ export default function Login() {
                             {otpMutation.error instanceof Error ? otpMutation.error.message : "An error occurred"}
                           </p>
                         )}
-                        <p className="text-sm text-gray-400 text-center">
+                        <p className="text-sm text-muted-foreground text-center">
                           For demo purposes, use:{" "}
                           <span className="text-blue-violet-400 font-mono">
                             123456
@@ -172,7 +172,7 @@ export default function Login() {
                         <Button
                           type="button"
                           variant="ghost"
-                          className="w-full text-gray-400 hover:text-white"
+                          className="w-full text-muted-foreground hover:text-foreground"
                           onClick={() => setStep("email")}
                         >
                           Back to email

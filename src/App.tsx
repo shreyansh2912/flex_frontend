@@ -13,11 +13,18 @@ import ShareForm from "./pages/ShareForm";
 import WordCloud from "./pages/WordCloud";
 import PublicForm from "./pages/PublicForm";
 import WordCloudDashboard from "./pages/WordCloud/WordCloudDashboard";
+import CreatePoll from './pages/Polls/CreatePoll';
+import PollsList from './pages/Polls/PollsList';
+import PollRoom from './pages/Polls/PollRoom';
+import ParticipantRoom from "./pages/WordCloud/ParticipantRoom";
+import ProtectedRoute from "./components/ProtectedRoute";
 import CreateSession from "./pages/WordCloud/CreateSession";
 import AdminRoom from "./pages/WordCloud/AdminRoom";
-import ParticipantRoom from "./pages/WordCloud/ParticipantRoom";
 import SessionResults from "./pages/WordCloud/SessionResults";
-import ProtectedRoute from "./components/ProtectedRoute";
+import CreateQnA from './pages/QnA/CreateQnA';
+import QnAList from './pages/QnA/QnAList';
+import QnARoom from './pages/QnA/QnARoom';
+import Settings from './pages/Settings';
 
 function App() {
   return (
@@ -25,7 +32,6 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/form/:id" element={<PublicForm />} />
-        <Route path="/word-cloud/join/:id" element={<ParticipantRoom />} />
         <Route path="/word-cloud/join/:id" element={<ParticipantRoom />} />
         
         {/* Protected Routes */}
@@ -42,16 +48,23 @@ function App() {
                   <Route path="/form/:id" element={<ViewForm />} />
                   <Route path="/form/:id/submit" element={<SubmitForm />} />
                   <Route path="/form/:id/share" element={<ShareForm />} />
-                  <Route path="/wordcloud" element={<WordCloud />} />
                   <Route path="/form/:id/submissions" element={<ViewSubmissions />} />
                   
-                  {/* Word Cloud Routes */}
+                  <Route path="/polls" element={<PollsList />} />
+                  <Route path="/create-poll" element={<CreatePoll />} />
+                  <Route path="/poll/:id" element={<PollRoom />} />
+
+                  <Route path="/qna" element={<QnAList />} />
+                  <Route path="/create-qna" element={<CreateQnA />} />
+                  <Route path="/qna/:id" element={<QnARoom />} />
+                  
+                  <Route path="/settings" element={<Settings />} />
+
                   <Route path="/word-cloud" element={<WordCloudDashboard />} />
                   <Route path="/word-cloud/create" element={<CreateSession />} />
                   <Route path="/word-cloud/admin/:id" element={<AdminRoom />} />
                   <Route path="/word-cloud/results/:id" element={<SessionResults />} />
                   
-                  {/* Catch-all route for 404 */}
                   <Route path="*" element={"404 Not Found"} />
                 </Routes>
               </Layout>

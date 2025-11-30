@@ -17,6 +17,7 @@ const AdminRoom: React.FC = () => {
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [words, setWords] = useState<any[]>([]);
   const [recentWords, setRecentWords] = useState<any[]>([]);
+  const [qrColor, setQrColor] = useState('#000000');
 
   const joinUrl = `${window.location.origin}/word-cloud/join/${id}`;
 
@@ -160,8 +161,20 @@ const AdminRoom: React.FC = () => {
                 <div className="bg-white p-8 rounded-3xl shadow-2xl text-center border border-gray-100 max-w-md w-full">
                   <h2 className="text-3xl font-bold mb-6 text-gray-800">Join the Session</h2>
                   <div className="bg-white p-4 rounded-xl shadow-inner border inline-block mb-6">
-                    <QRCodeSVG value={joinUrl} size={200} />
+                    <QRCodeSVG value={joinUrl} size={200} fgColor={qrColor} />
                   </div>
+                  
+                  {/* Color Picker */}
+                  <div className="flex items-center justify-center gap-3 mb-6">
+                    <label className="text-sm font-medium text-gray-600">QR Color:</label>
+                    <input 
+                      type="color" 
+                      value={qrColor}
+                      onChange={(e) => setQrColor(e.target.value)}
+                      className="w-8 h-8 rounded cursor-pointer border-0 p-0"
+                    />
+                  </div>
+
                   <p className="text-gray-600 mb-6 font-medium break-all bg-gray-50 p-3 rounded-lg text-sm border">
                     {joinUrl}
                   </p>

@@ -1,12 +1,14 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import html2canvas from 'html2canvas';
 import D3WordCloud from '../../components/D3WordCloud';
-import { Trophy, ArrowLeft, Download } from 'lucide-react';
+import { Trophy, ArrowLeft, Download, Image as ImageIcon } from 'lucide-react';
 
 const SessionResults: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const [session, setSession] = useState<any>(null);
+  const resultsRef = useRef<HTMLDivElement>(null);
   const BASE_URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5001';
 
   useEffect(() => {
@@ -52,6 +54,21 @@ const SessionResults: React.FC = () => {
     document.body.removeChild(link);
   };
 
+  const handleImageExport = async () => {
+    if (resultsRef.current) {
+      try {
+        const canvas = await html2canvas(resultsRef.current);
+        const image = canvas.toDataURL("image/png");
+        const link = document.createElement('a');
+        link.href = image;
+        link.download = `wordcloud_session_${id}.png`;
+        link.click();
+      } catch (err) {
+        console.error("Failed to export image:", err);
+      }
+    }
+  };
+
   if (!session) return <div className="flex justify-center items-center h-screen">Loading...</div>;
 
   return (
@@ -61,15 +78,23 @@ const SessionResults: React.FC = () => {
           <Link to="/word-cloud" className="text-gray-500 hover:text-gray-700 flex items-center">
             <ArrowLeft size={20} className="mr-1" /> Back to Dashboard
           </Link>
-          <button 
-            onClick={handleExport}
-            className="flex items-center gap-2 text-blue-600 font-medium hover:bg-blue-50 px-4 py-2 rounded-lg transition-colors"
-          >
-            <Download size={20} /> Export Data
-          </button>
+          <div className="flex gap-3">
+            <button 
+              onClick={handleImageExport}
+              className="flex items-center gap-2 text-purple-600 font-medium hover:bg-purple-50 px-4 py-2 rounded-lg transition-colors border border-purple-200"
+            >
+              <ImageIcon size={20} /> Export PNG
+            </button>
+            <button 
+              onClick={handleExport}
+              className="flex items-center gap-2 text-blue-600 font-medium hover:bg-blue-50 px-4 py-2 rounded-lg transition-colors border border-blue-200"
+            >
+              <Download size={20} /> Export CSV
+            </button>
+          </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
+        <div ref={resultsRef} className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
           <div className="p-8 text-center border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
             <h1 className="text-4xl font-bold mb-2">Session Results</h1>
             <p className="opacity-90">Total Words Collected: {session.words.length}</p>
