@@ -10,7 +10,8 @@ import Layout from "./components/layout/Layout";
 import ViewSubmissions from "./pages/ViewSubmissions";
 import Forms from "./pages/Forms";
 import ShareForm from "./pages/ShareForm";
-import WordCloud from "./pages/WordCloud";
+import NotFound from "./pages/NotFound";
+
 import PublicForm from "./pages/PublicForm";
 import WordCloudDashboard from "./pages/WordCloud/WordCloudDashboard";
 import CreatePoll from './pages/Polls/CreatePoll';
@@ -65,12 +66,15 @@ function App() {
                   <Route path="/word-cloud/admin/:id" element={<AdminRoom />} />
                   <Route path="/word-cloud/results/:id" element={<SessionResults />} />
                   
-                  <Route path="*" element={"404 Not Found"} />
+                  <Route path="*" element={<NotFound />} />
                 </Routes>
               </Layout>
             }
           />
         </Route>
+        
+        {/* Public Catch-all */}
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );

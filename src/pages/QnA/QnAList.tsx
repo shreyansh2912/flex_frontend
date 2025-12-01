@@ -4,12 +4,7 @@ import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
 import { Plus, MessageCircle, ExternalLink } from 'lucide-react';
 
-interface IQnA {
-  _id: string;
-  status: string;
-  createdAt: string;
-  questions: any[];
-}
+import type { IQnA } from '../../types';
 
 const QnAList: React.FC = () => {
   const { token } = useAuth();

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import Layout from '../../components/layout/Layout';
@@ -12,7 +12,7 @@ const CreateQnA = () => {
   const handleCreate = () => {
     let hostId = user?._id;
     if (!hostId) {
-      hostId = localStorage.getItem('guestId');
+      hostId = localStorage.getItem('guestId') || undefined;
       if (!hostId) {
         hostId = 'guest_' + Math.random().toString(36).substr(2, 9);
         localStorage.setItem('guestId', hostId);

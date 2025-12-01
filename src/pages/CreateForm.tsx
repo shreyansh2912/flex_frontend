@@ -5,29 +5,7 @@ import { useAuth } from '../context/AuthContext';
 import FormPreview from '../components/FormPreview';
 import { Trash2, Plus, ArrowRight, Save, Lock, Globe, ArrowUp, ArrowDown } from 'lucide-react';
 
-interface FormField {
-  id: number;
-  label: string;
-  name: string;
-  type: 'text' | 'email' | 'number' | 'date' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'image';
-  placeholder?: string;
-  options?: string[];
-  validation?: {
-    required?: boolean;
-    minLength?: number;
-    maxLength?: number;
-    pattern?: string;
-  };
-  layout?: {
-    width: string;
-  };
-  page?: number;
-  logic?: {
-    action: 'show' | 'hide';
-    when: string;
-    equals: string;
-  };
-}
+import type { FormField } from '../types';
 
 const CreateForm: React.FC = () => {
   const { token, logout } = useAuth();
@@ -342,7 +320,7 @@ const CreateForm: React.FC = () => {
                       <div className="grid grid-cols-3 gap-2">
                         <select
                           value={field.logic?.action || ''}
-                          onChange={(e) => updateField(field.id, { logic: { ...field.logic, action: e.target.value as any } })}
+                          onChange={(e) => updateField(field.id, { logic: { when: '', equals: '', ...field.logic, action: e.target.value as 'show' | 'hide' } })}
                           className="w-full p-1 border rounded text-sm"
                         >
                           <option value="">No Logic</option>
@@ -354,7 +332,7 @@ const CreateForm: React.FC = () => {
                           <>
                             <select
                               value={field.logic?.when || ''}
-                              onChange={(e) => updateField(field.id, { logic: { ...field.logic, when: e.target.value } })}
+                              onChange={(e) => updateField(field.id, { logic: { action: 'show', equals: '', ...field.logic, when: e.target.value } })}
                               className="w-full p-1 border rounded text-sm"
                             >
                               <option value="">Select Field</option>
@@ -368,7 +346,7 @@ const CreateForm: React.FC = () => {
                             <input
                               type="text"
                               value={field.logic?.equals || ''}
-                              onChange={(e) => updateField(field.id, { logic: { ...field.logic, equals: e.target.value } })}
+                              onChange={(e) => updateField(field.id, { logic: { action: 'show', when: '', ...field.logic, equals: e.target.value } })}
                               className="w-full p-1 border rounded text-sm"
                               placeholder="Value equals..."
                             />

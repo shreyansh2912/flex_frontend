@@ -3,17 +3,13 @@ import { io, Socket } from 'socket.io-client';
 import { useAuth } from '../context/AuthContext';
 import D3WordCloud from '../components/D3WordCloud';
 import { Send, Cloud} from 'lucide-react';
+import type { IWordData } from '../types';
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5001';
 
-interface WordData {
-  text: string;
-  value: number;
-}
-
 const WordCloudPage: React.FC = () => {
   const { token } = useAuth();
-  const [words, setWords] = useState<WordData[]>([]);
+  const [words, setWords] = useState<IWordData[]>([]);
   const [inputWord, setInputWord] = useState('');
   const [socket, setSocket] = useState<Socket | null>(null);
   const [connectionStatus, setConnectionStatus] = useState<'Connecting' | 'Connected' | 'Disconnected' | 'Error'>('Connecting');
@@ -48,11 +44,11 @@ const WordCloudPage: React.FC = () => {
       setConnectionStatus('Error');
     });
 
-    newSocket.on('initialWords', (data: WordData[]) => {
+    newSocket.on('initialWords', (data: IWordData[]) => {
       setWords(data);
     });
 
-    newSocket.on('wordCloudUpdate', (data: WordData[]) => {
+    newSocket.on('wordCloudUpdate', (data: IWordData[]) => {
       setWords(data);
     });
 

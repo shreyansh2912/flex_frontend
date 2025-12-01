@@ -2,12 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import formService from '../services/formService';
 import { useAuth } from '../context/AuthContext';
-
-interface IForm {
-  _id: string;
-  title: string;
-  visibility: 'public' | 'private';
-}
+import type { IForm } from '../types';
 
 const ShareForm: React.FC = () => {
   const { id: formId } = useParams<{ id: string }>();

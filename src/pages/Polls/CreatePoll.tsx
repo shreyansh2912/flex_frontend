@@ -51,7 +51,7 @@ const CreatePoll: React.FC = () => {
     
     let hostId = user?._id;
     if (!hostId) {
-      hostId = localStorage.getItem('guestId');
+      hostId = localStorage.getItem('guestId') || undefined;
       if (!hostId) {
         hostId = 'guest_' + Math.random().toString(36).substr(2, 9);
         localStorage.setItem('guestId', hostId);

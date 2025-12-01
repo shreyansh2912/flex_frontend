@@ -1,30 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import formService from '../services/formService';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { Plus, FileText, MessageSquare, BarChart2, Cloud } from 'lucide-react';
 
-interface IForm {
-  _id: string;
-  title: string;
-  formType: string;
-}
-
-interface ISession {
-  _id: string;
-  status: string;
-  createdAt: string;
-  // For Word Cloud
-  timeLimit?: number;
-  words?: any[];
-  // For Poll/QnA
-  question?: string;
-}
+import type { IForm, ISession } from '../types';
 
 const Dashboard: React.FC = () => {
   const { token, logout } = useAuth();
-  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState<'forms' | 'wordclouds' | 'polls' | 'qna'>('forms');
   
   const [forms, setForms] = useState<IForm[]>([]);
@@ -48,22 +33,18 @@ const Dashboard: React.FC = () => {
           ? { headers: { Authorization: `Bearer ${token}` } }
           : { params: { hostId: guestId } };
 
-        // Fetch Forms (Only if logged in)
         if (activeTab === 'forms' && forms.length === 0 && token) {
           const response = await formService.getForms(token);
           setForms(response);
         }
-        // Fetch Word Clouds
         else if (activeTab === 'wordclouds' && wordClouds.length === 0) {
           const response = await axios.get(`${BASE_URL}/api/word-cloud/sessions/my`, config);
           setWordClouds(response.data.data);
         }
-        // Fetch Polls
         else if (activeTab === 'polls' && polls.length === 0) {
           const response = await axios.get(`${BASE_URL}/api/polls`, config);
           setPolls(response.data.data);
         }
-        // Fetch QnA
         else if (activeTab === 'qna' && qnaSessions.length === 0) {
           const response = await axios.get(`${BASE_URL}/api/qna`, config);
           setQnaSessions(response.data.data);

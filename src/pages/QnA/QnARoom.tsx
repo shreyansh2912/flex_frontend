@@ -1,29 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { io, Socket } from 'socket.io-client';
 import { useAuth } from '../../context/AuthContext';
 import Layout from '../../components/layout/Layout';
 import { QRCodeSVG } from 'qrcode.react';
 
-interface Question {
-  _id: string;
-  text: string;
-  upvotes: number;
-  isAnswered: boolean;
-  createdAt: string;
-}
-
-interface QnASession {
-  _id: string;
-  hostId: string;
-  questions: Question[];
-  status: 'active' | 'completed';
-}
+import type { IQnASession } from '../../types';
 
 const QnARoom = () => {
   const { id } = useParams<{ id: string }>();
   const { user, token } = useAuth();
-  const [session, setSession] = useState<QnASession | null>(null);
+  const [session, setSession] = useState<IQnASession | null>(null);
   const [newQuestion, setNewQuestion] = useState('');
   const [socket, setSocket] = useState<Socket | null>(null);
   const [error, setError] = useState('');
@@ -42,11 +29,11 @@ const QnARoom = () => {
       newSocket.emit('joinQnA', id);
     });
 
-    newSocket.on('qnaState', (data: QnASession) => {
+    newSocket.on('qnaState', (data: IQnASession) => {
       setSession(data);
     });
 
-    newSocket.on('qnaUpdate', (data: QnASession) => {
+    newSocket.on('qnaUpdate', (data: IQnASession) => {
       setSession(data);
     });
 

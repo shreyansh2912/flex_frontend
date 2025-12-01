@@ -4,13 +4,7 @@ import formService from '../services/formService';
 import { useAuth } from '../context/AuthContext';
 import { Plus, ExternalLink, BarChart2, Trash2, Eye } from 'lucide-react';
 
-interface IForm {
-  _id: string;
-  title: string;
-  formType: string;
-  visibility: string;
-  createdAt: string;
-}
+import type { IForm } from '../types';
 
 const Forms: React.FC = () => {
   const { token, logout } = useAuth();
@@ -88,7 +82,7 @@ const Forms: React.FC = () => {
                 <tr key={form._id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">{form.title}</div>
-                    <div className="text-xs text-gray-500">Created: {new Date(form.createdAt).toLocaleDateString()}</div>
+                    <div className="text-xs text-gray-500">Created: {form.createdAt ? new Date(form.createdAt).toLocaleDateString() : 'N/A'}</div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">

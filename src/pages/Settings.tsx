@@ -4,16 +4,11 @@ import axios from 'axios';
 import { QRCodeSVG } from 'qrcode.react';
 import { Save, Upload, User, Loader2 } from 'lucide-react';
 
-interface UserProfile {
-  name: string;
-  email: string;
-  profileImage: string;
-  qrColor: string;
-}
+import type { IUserProfile } from '../types';
 
 const Settings: React.FC = () => {
   const { token } = useAuth();
-  const [profile, setProfile] = useState<UserProfile>({
+  const [profile, setProfile] = useState<IUserProfile>({
     name: '',
     email: '',
     profileImage: '',

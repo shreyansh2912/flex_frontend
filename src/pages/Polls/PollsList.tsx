@@ -2,15 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../../context/AuthContext';
-import { Plus, BarChart2, ExternalLink, Trash2 } from 'lucide-react';
+import { Plus, BarChart2, ExternalLink } from 'lucide-react';
 
-interface IPoll {
-  _id: string;
-  question: string;
-  status: string;
-  createdAt: string;
-  options: { text: string; count: number }[];
-}
+import type { IPoll } from '../../types';
 
 const PollsList: React.FC = () => {
   const { token } = useAuth();
@@ -45,12 +39,8 @@ const PollsList: React.FC = () => {
     fetchPolls();
   }, [token]);
 
-  const handleDelete = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this poll?')) return;
-    // Implement delete logic here if backend supports it, otherwise just UI removal for now
-    // For now, we'll just filter it out from the state as delete endpoint might not be ready
-    setPolls(polls.filter(p => p._id !== id));
-  };
+
+
 
   return (
     <div className="container mx-auto p-6 max-w-6xl">
