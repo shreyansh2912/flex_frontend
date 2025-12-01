@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import Layout from '../../components/layout/Layout';
 import { io } from 'socket.io-client';
 
 const CreateQnA = () => {
