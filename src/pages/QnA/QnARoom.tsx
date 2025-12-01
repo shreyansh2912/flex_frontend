@@ -72,11 +72,11 @@ const QnARoom = () => {
     .sort((a, b) => b.upvotes - a.upvotes); // Sort by upvotes descending
 
   return (
-    <Layout>
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800">Live Q&A</h1>
-          <div className="text-sm text-gray-500">
+    // <Layout>
+    <>
+        <div className="flex justify-between items-center mb-8 dark:text-white">
+          <h1 className="text-3xl font-bold text-gray-800 dark:text-white">Live Q&A</h1>
+          <div className="text-sm text-gray-500 dark:text-gray-400">
             ID: {id}
           </div>
         </div>
@@ -90,17 +90,17 @@ const QnARoom = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Main Content: Questions List */}
           <div className="md:col-span-2">
-            <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-              <h2 className="text-xl font-semibold mb-4">Questions ({activeQuestions.length})</h2>
+            <div className="bg-white rounded-lg shadow-md p-6 mb-6 dark:bg-gray-800">
+              <h2 className="text-xl font-semibold mb-4 dark:text-white">Questions ({activeQuestions.length})</h2>
               
               {activeQuestions.length === 0 ? (
                 <p className="text-gray-500 text-center py-8">No questions yet. Be the first to ask!</p>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-4 max-h-[calc(100vh-398px)] overflow-y-auto ">
                   {activeQuestions.map((q) => (
-                    <div key={q._id} className="border border-gray-200 rounded-lg p-4 flex justify-between items-start hover:bg-gray-50 transition-colors">
+                    <div key={q._id} className="border border-gray-200 rounded-lg p-4 flex dark:text-white justify-between items-start hover:bg-gray-50 transition-colors">
                       <div className="flex-1">
-                        <p className="text-lg text-gray-800">{q.text}</p>
+                        <p className="text-lg text-gray-800 dark:text-white">{q.text}</p>
                         <p className="text-xs text-gray-400 mt-2">
                           {new Date(q.createdAt).toLocaleTimeString()}
                         </p>
@@ -134,8 +134,7 @@ const QnARoom = () => {
               )}
             </div>
 
-            {/* Ask Question Input */}
-            <div className="bg-white rounded-lg shadow-md p-6 sticky bottom-6">
+            <div className="bg-white rounded-lg dark:bg-gray-800 shadow-md p-6 sticky bottom-0">
               <form onSubmit={handleAsk} className="flex gap-4">
                 <input
                   type="text"
@@ -157,9 +156,9 @@ const QnARoom = () => {
 
           {/* Sidebar: Info & QR Code */}
           <div className="md:col-span-1">
-            <div className="bg-white rounded-lg shadow-md p-6 sticky top-6">
+            <div className="bg-white rounded-lg dark:bg-gray-800 shadow-md p-6 sticky top-6">
               <h3 className="text-lg font-semibold mb-4">Join Session</h3>
-              <div className="flex justify-center mb-4">
+              <div className="flex justify-center mb-4 p-2 bg-white w-min mx-auto">
                 <QRCodeSVG value={window.location.href} size={150} />
               </div>
               <p className="text-center text-sm text-gray-500 break-all">
@@ -177,8 +176,8 @@ const QnARoom = () => {
             </div>
           </div>
         </div>
-      </div>
-    </Layout>
+        </>
+    // </Layout>
   );
 };
 

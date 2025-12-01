@@ -27,8 +27,8 @@ const WordCloudDashboard: React.FC = () => {
     <div className="p-8 max-w-7xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Word Cloud Sessions</h1>
-          <p className="text-gray-500 mt-1">Manage your interactive word cloud rooms</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Word Cloud Sessions</h1>
+          <p className="text-gray-500 mt-1 dark:text-gray-400">Manage your interactive word cloud rooms</p>
         </div>
         <Link
           to="/word-cloud/create"
@@ -65,7 +65,7 @@ const WordCloudDashboard: React.FC = () => {
 
             <Link
               to={session.status === 'completed' ? `/word-cloud/results/${session._id}` : `/word-cloud/admin/${session._id}`}
-              className="w-full block text-center py-2.5 rounded-lg border border-gray-200 hover:border-blue-500 hover:text-blue-600 transition-colors font-medium"
+              className="w-full block text-center py-2.5 rounded-lg border dark:border-gray-700 dark:hover:border-blue-500 dark:hover:text-blue-600 dark:text-black border-gray-200 hover:border-blue-500 hover:text-blue-600 transition-colors font-medium"
             >
               {session.status === 'completed' ? 'View Results' : 'Enter Room'}
             </Link>

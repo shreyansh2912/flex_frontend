@@ -204,16 +204,13 @@ const Dashboard: React.FC = () => {
           <p className="text-gray-500 dark:text-gray-400 mt-1">Manage all your interactive sessions in one place.</p>
         </div>
         
-        {/* Create Dropdown (Simplified as separate buttons for now or a single primary action) */}
-        <div className="mt-4 md:mt-0 flex gap-2">
-           {/* Could be a dropdown, but direct links are fine for now */}
-        </div>
+        {/* <div className="mt-4 md:mt-0 flex gap-2">
+        </div> */}
       </div>
 
       {error && <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4">{error}</div>}
 
-      {/* Tabs */}
-      <div className="border-b border-gray-200 dark:border-slate-700 mb-6">
+      <div className="dark:border-slate-700 mb-6">
         <nav className="-mb-px flex space-x-8" aria-label="Tabs">
           {[
             { id: 'forms', name: 'Forms', icon: FileText },

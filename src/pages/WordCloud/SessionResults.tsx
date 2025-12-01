@@ -72,10 +72,10 @@ const SessionResults: React.FC = () => {
   if (!session) return <div className="flex justify-center items-center h-screen">Loading...</div>;
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
+    <div className="min-h-screen bg-gray-50 p-8 dark:bg-gray-900">
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
-          <Link to="/word-cloud" className="text-gray-500 hover:text-gray-700 flex items-center">
+          <Link to="/word-cloud" className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 flex items-center">
             <ArrowLeft size={20} className="mr-1" /> Back to Dashboard
           </Link>
           <div className="flex gap-3">
@@ -94,25 +94,25 @@ const SessionResults: React.FC = () => {
           </div>
         </div>
 
-        <div ref={resultsRef} className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
+        <div ref={resultsRef} className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 dark:bg-gray-800">
           <div className="p-8 text-center border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
             <h1 className="text-4xl font-bold mb-2">Session Results</h1>
             <p className="opacity-90">Total Words Collected: {session.words.length}</p>
           </div>
           
-          <div className="p-8 flex justify-center bg-gray-50">
+          <div className="p-8 flex justify-center bg-gray-50 dark:bg-gray-800">
             <D3WordCloud words={cloudData} height={500} />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+          <div className="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800">
+            <h2 className="text-xl font-bold text-gray-800 mb-6 flex items-center gap-2 dark:text-white">
               <Trophy className="text-yellow-500" /> Top Words
             </h2>
             <div className="space-y-4">
               {sortedWords.slice(0, 5).map((word: any, idx: number) => (
-                <div key={idx} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100">
+                <div key={idx} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg border border-gray-100 dark:bg-gray-700">
                   <div className="flex items-center gap-4">
                     <span className={`w-8 h-8 flex items-center justify-center rounded-full font-bold ${
                       idx === 0 ? 'bg-yellow-100 text-yellow-700' :
@@ -130,11 +130,11 @@ const SessionResults: React.FC = () => {
             </div>
           </div>
 
-          <div className="bg-white rounded-xl shadow-md p-6">
-            <h2 className="text-xl font-bold text-gray-800 mb-6">All Submissions</h2>
+          <div className="bg-white rounded-xl shadow-md p-6 dark:bg-gray-800">
+            <h2 className="text-xl font-bold text-gray-800 mb-6 dark:text-white">All Submissions</h2>
             <div className="overflow-y-auto max-h-[400px]">
               <table className="w-full text-left">
-                <thead className="text-gray-500 text-sm border-b">
+                <thead className="text-gray-500 text-sm border-b dark:text-gray-400">
                   <tr>
                     <th className="pb-3 pl-2">Word</th>
                     <th className="pb-3">Count</th>

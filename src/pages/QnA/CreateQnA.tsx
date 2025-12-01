@@ -42,7 +42,7 @@ const CreateQnA = () => {
   };
 
   return (
-    <Layout>
+    // <Layout>
       <div className="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-md">
         <h1 className="text-3xl font-bold mb-6 text-center text-indigo-600">Start a Q&A Session</h1>
         
@@ -65,7 +65,7 @@ const CreateQnA = () => {
           </button>
         </div>
       </div>
-    </Layout>
+    // </Layout>
   );
 };
 
