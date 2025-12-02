@@ -88,6 +88,7 @@ export interface IQuestion {
     _id: string;
     text: string;
     upvotes: number;
+    upvotedBy?: string[];
     isAnswered: boolean;
     createdAt: string;
 }

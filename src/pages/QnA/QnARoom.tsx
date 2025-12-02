@@ -66,6 +66,7 @@ const QnARoom = () => {
   if (!session) return <Layout><div>Loading...</div></Layout>;
 
   const guestId = localStorage.getItem('guestId');
+  const currentUserId = user?._id || guestId;
   const isHost = (user && session.hostId === user._id) || (session.hostId === guestId);
   const activeQuestions = session.questions
     .filter(q => !q.isAnswered)
@@ -114,9 +115,9 @@ const QnARoom = () => {
                         
                         <button
                           onClick={() => handleUpvote(q._id)}
-                          className="text-sm text-gray-500 hover:text-indigo-600 underline"
+                          className={`text-sm ${q.upvotedBy?.includes(currentUserId || '') ? 'text-indigo-600 font-bold' : 'text-gray-500 hover:text-indigo-600'} underline`}
                         >
-                          Upvote
+                          {q.upvotedBy?.includes(currentUserId || '') ? 'Upvoted' : 'Upvote'}
                         </button>
 
                         {isHost && (
