@@ -1,5 +1,4 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import React, { useEffect } from 'react';
 
 interface SEOProps {
   title: string;
@@ -13,25 +12,48 @@ const SEO: React.FC<SEOProps> = ({ title, description, image, url }) => {
   const fullTitle = `${title} | ${siteTitle}`;
   const defaultDescription = 'Engage your audience with real-time word clouds, polls, and Q&A sessions.';
   const defaultImage = 'https://flex-app.com/og-image.png';
-  const defaultUrl = 'https://flex-app.com/';
+  const defaultUrl = window.location.href;
 
-  return (
-    <Helmet>
-      <title>{fullTitle}</title>
-      <meta name="description" content={description || defaultDescription} />
+  useEffect(() => {
+    // Update Title
+    document.title = fullTitle;
 
-      <meta property="og:type" content="website" />
-      <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description || defaultDescription} />
-      <meta property="og:image" content={image || defaultImage} />
-      <meta property="og:url" content={url || defaultUrl} />
+    // Helper to update meta tags
+    const updateMeta = (name: string, content: string, attribute = 'name') => {
+      let element = document.querySelector(`meta[${attribute}="${name}"]`);
+      if (!element) {
+        element = document.createElement('meta');
+        element.setAttribute(attribute, name);
+        document.head.appendChild(element);
+      }
+      element.setAttribute('content', content);
+    };
 
-      <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description || defaultDescription} />
-      <meta name="twitter:image" content={image || defaultImage} />
-    </Helmet>
-  );
+    const desc = description || defaultDescription;
+    const img = image || defaultImage;
+    const currentUrl = url || defaultUrl;
+
+    // Standard Meta
+    updateMeta('description', desc);
+
+    // Open Graph
+    updateMeta('og:title', fullTitle, 'property');
+    updateMeta('og:description', desc, 'property');
+    updateMeta('og:image', img, 'property');
+    updateMeta('og:url', currentUrl, 'property');
+
+    // Twitter
+    updateMeta('twitter:title', fullTitle, 'property'); // Twitter sometimes uses name, sometimes property. keeping consistent with OG for now or standardizing.
+    updateMeta('twitter:description', desc, 'property');
+    updateMeta('twitter:image', img, 'property');
+
+    // Cleanup (optional, but good for SPA navigation)
+    return () => {
+      // Resetting to default might be jarring, usually we just let the next page overwrite.
+    };
+  }, [fullTitle, description, image, url]);
+
+  return null;
 };
 
 export default SEO;

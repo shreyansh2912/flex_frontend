@@ -20,6 +20,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
+    if (!localStorage.getItem('guestId')) {
+      localStorage.setItem('guestId', `guest_${Math.random().toString(36).substr(2, 9)}_${Date.now()}`);
+    }
+
     if (token) {
       try {
         const payload = JSON.parse(atob(token.split('.')[1]));

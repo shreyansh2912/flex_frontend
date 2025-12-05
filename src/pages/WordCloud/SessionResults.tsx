@@ -1,3 +1,9 @@
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import axios from 'axios';
+import html2canvas from 'html2canvas';
+import D3WordCloud from '../../components/D3WordCloud';
+import { Trophy, ArrowLeft, Download, Image as ImageIcon } from 'lucide-react';
 import SEO from '../../components/SEO';
 import ShareResults from '../../components/ShareResults';
 

@@ -24,6 +24,9 @@ ChartJS.register(
 
 import { QRCodeSVG as QRCode } from 'qrcode.react';
 
+import SEO from '../../components/SEO';
+import ShareResults from '../../components/ShareResults';
+
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000';
 
 const PollRoom: React.FC = () => {
@@ -94,6 +97,10 @@ const PollRoom: React.FC = () => {
 
   return (
     <div className="container mx-auto p-6 max-w-6xl">
+      <SEO 
+        title={poll.question} 
+        description={`Vote now: ${poll.question}`}
+      />
       <div className="bg-white p-8 rounded-xl shadow-lg">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl font-bold text-gray-800">{poll.question}</h1>
@@ -130,9 +137,16 @@ const PollRoom: React.FC = () => {
             </div>
 
             {/* Right Column: Live Results */}
-            <div className="h-96 p-4 bg-gray-50 rounded-xl border border-gray-200">
-              <h2 className="text-xl font-semibold mb-4 text-gray-700 text-center">Live Results</h2>
-              <Bar data={chartData} options={{ responsive: true, maintainAspectRatio: false }} />
+            <div className="flex flex-col gap-4">
+              <div id="poll-results" className="h-96 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                <h2 className="text-xl font-semibold mb-4 text-gray-700 text-center">Live Results</h2>
+                <Bar data={chartData} options={{ responsive: true, maintainAspectRatio: false }} />
+              </div>
+              <ShareResults 
+                targetId="poll-results" 
+                title={`Poll Results: ${poll.question}`} 
+                url={window.location.href} 
+              />
             </div>
           </div>
         ) : (

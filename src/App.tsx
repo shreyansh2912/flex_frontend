@@ -27,9 +27,12 @@ import QnAList from './pages/QnA/QnAList';
 import QnARoom from './pages/QnA/QnARoom';
 import Settings from './pages/Settings';
 
+import Analytics from './components/Analytics';
+
 function App() {
   return (
     <Router>
+      <Analytics />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/form/:id" element={<PublicForm />} />
