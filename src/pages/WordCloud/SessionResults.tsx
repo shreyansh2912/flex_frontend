@@ -1,9 +1,5 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
-import html2canvas from 'html2canvas';
-import D3WordCloud from '../../components/D3WordCloud';
-import { Trophy, ArrowLeft, Download, Image as ImageIcon } from 'lucide-react';
+import SEO from '../../components/SEO';
+import ShareResults from '../../components/ShareResults';
 
 const SessionResults: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -73,12 +69,21 @@ const SessionResults: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 p-8 dark:bg-gray-900">
+      <SEO 
+        title="Word Cloud Results" 
+        description={`Check out the word cloud results from session ${id}. Top word: ${sortedWords[0]?.text || 'None'}`}
+      />
       <div className="max-w-6xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <Link to="/word-cloud" className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 flex items-center">
             <ArrowLeft size={20} className="mr-1" /> Back to Dashboard
           </Link>
           <div className="flex gap-3">
+             <ShareResults 
+              targetId="wordcloud-container" 
+              title={`Word Cloud Results: ${sortedWords[0]?.text || ''} is trending!`} 
+              url={window.location.href} 
+            />
             <button 
               onClick={handleImageExport}
               className="flex items-center gap-2 text-purple-600 font-medium hover:bg-purple-50 px-4 py-2 rounded-lg transition-colors border border-purple-200"
@@ -94,7 +99,7 @@ const SessionResults: React.FC = () => {
           </div>
         </div>
 
-        <div ref={resultsRef} className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 dark:bg-gray-800">
+        <div id="wordcloud-container" ref={resultsRef} className="bg-white rounded-2xl shadow-xl overflow-hidden mb-8 dark:bg-gray-800">
           <div className="p-8 text-center border-b bg-gradient-to-r from-blue-600 to-purple-600 text-white">
             <h1 className="text-4xl font-bold mb-2">Session Results</h1>
             <p className="opacity-90">Total Words Collected: {session.words.length}</p>
